@@ -24,6 +24,8 @@ describe ('Given a instance of FilmsRepo class', () => {
             const films = await repo.getAllFilms()
             // Assert
             expect(films).toEqual([])
+            // Assert de implementación
+            expect(prismaMock.film.findMany).toHaveBeenCalled();
         })
     })
 })

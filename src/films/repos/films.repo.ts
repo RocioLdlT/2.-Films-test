@@ -56,7 +56,11 @@ export class FilmsRepo {
                 genres: {
                     connect:
                         filmData.genres?.map((genre) => ({ name: genre })) ??
-                        [],
+                        [], // ?? O me llega un dato con géneros o me llega un array sin géneros
+                            // Al estar dentro de genres, en nuestro testing no lo está testeando, 
+                            // por lo que el coverage nos da un aviso de que en esta línea no se está testeando.  
+                            // Hay que tener en cuenta que en este caso comprobaríamos parte de base de datos,
+                            // por lo que no es tan importante que lo testeasemos para definir que nuestro repo funciona a través del testing.
                 },
             },
             include: {
