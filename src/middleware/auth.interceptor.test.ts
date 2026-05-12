@@ -1,19 +1,17 @@
 import type { Request, Response, NextFunction } from "express";
-import { customHeaders } from "./custom-headers.ts";
+import type { AuthInterceptor } from "./auth.interceptor.ts";
 
 describe('Given ', () => {
 
-        let project: string;
         let req: Request;
         let res: Response;
         let next: NextFunction;
+        let authInterceptor: AuthInterceptor;
 
     beforeEach(() => { 
         req =  {} as Request;
- 
-        customHeaders = {
-            setHeader: vi.fn().mockRejectedValue(project)
-        }
+        res = 
+        next = 
     });
     afterEach(() => {
         vi.clearAllMocks();
@@ -26,5 +24,3 @@ describe('Given ', () => {
     });
     describe('')
 })
-
-
