@@ -1,9 +1,67 @@
+// import { compare, hash } from 'bcryptjs';
+// import jwt from 'jsonwebtoken';
+// import { env } from '../config/env.ts';
+// import debug from 'debug';
+// import type { TokenPayload } from '../types/login.ts';
+// import { rejects } from 'node:assert';
+
+// const log = debug(`${env.PROJECT_NAME}:service:auth`);
+// log('Loading auth service...');
+
+// // eslint-disable-next-line @typescript-eslint/no-extraneous-class
+// export class AuthService {
+//     static saltRounds = env.SALT_ROUND;
+
+//     static hash(password: string): Promise<string> {
+//         return hash(password, this.saltRounds);
+//     }
+
+//     static compare(password: string, hash: string): Promise<boolean> {
+//         return compare(password, hash);
+//     }
+
+//     static generateToken(payload: TokenPayload): string {
+//         return jwt.sign(
+//             payload,
+//             env.JWT_SECRET,
+//             //{ expiresIn: '1h' }
+//         );
+//     }
+
+//     //    static generateTokenAsync(payload: TokenPayload): Promise<string> {
+//     //     return new Promise((resolve, reject) =>{
+//     //          jwt.sign(
+//     //         payload,
+//     //         env.JWT_SECRET,
+//     //         //{ expiresIn: '1h' }
+//     //     )})
+        
+//     // }
+
+//     static verifyToken(token: string): TokenPayload {
+//         return jwt.verify(token, env.JWT_SECRET) as TokenPayload;
+//     }
+
+//     static verifyTokenAsync(token: string): Promise<TokenPayload> {
+//         return new Promise((resolve, reject) => {
+//             jwt.verify(token, env.JWT_SECRET), (err, payload) => {
+//                 if(err) {
+//                     reject(err);
+//                 }
+//                 resolve(payload as TokenPayload);
+//             };
+//         });
+//         };
+
+        
+//     }
+// }
+
 import { compare, hash } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env.ts';
 import debug from 'debug';
 import type { TokenPayload } from '../types/login.ts';
-import { rejects } from 'node:assert';
 
 const log = debug(`${env.PROJECT_NAME}:service:auth`);
 log('Loading auth service...');
@@ -28,15 +86,21 @@ export class AuthService {
         );
     }
 
-    //    static generateTokenAsync(payload: TokenPayload): Promise<string> {
-    //     return new Promise((resolve, reject) =>{
-    //          jwt.sign(
-    //         payload,
-    //         env.JWT_SECRET,
-    //         //{ expiresIn: '1h' }
-    //     )})
-        
-    // }
+    static generateTokenAsync(payload: TokenPayload): Promise<string> {
+        return new Promise((resolve) => {
+            jwt.sign(
+                payload,
+                env.JWT_SECRET,
+                //{ expiresIn: '1h' }
+                (_err, token) => {
+                    // if (err) {
+                    //     reject(err);
+                    // }
+                    resolve(token as string);
+                },
+            );
+        });
+    }
 
     static verifyToken(token: string): TokenPayload {
         return jwt.verify(token, env.JWT_SECRET) as TokenPayload;
@@ -44,15 +108,12 @@ export class AuthService {
 
     static verifyTokenAsync(token: string): Promise<TokenPayload> {
         return new Promise((resolve, reject) => {
-            jwt.verify(token, env.JWT_SECRET), (err, payload) => {
-                if(err) {
+            jwt.verify(token, env.JWT_SECRET, (err, payload) => {
+                if (err) {
                     reject(err);
                 }
                 resolve(payload as TokenPayload);
-            };
+            });
         });
-        };
-
-        
     }
 }
